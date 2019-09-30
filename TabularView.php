@@ -182,7 +182,7 @@ class TabularView extends \ExternalModules\AbstractExternalModule
             } elseif ($instance['date-field'] != "" && $instance['instrument-label'] == "") {
                 $temp = array($instance['date-field']);
             } elseif ($instance['instrument-label'] != "" && $instance['date-field'] == "") {
-                $temp = array($this->extractField($instance['instrument-label']));
+                $temp = $this->extractField($instance['instrument-label']);
             }
             /**
              * remove any duplication

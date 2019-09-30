@@ -1,0 +1,67 @@
+{
+  "name": "Tabular View",
+  "namespace": "Stanford\\TabularView",
+  "description": "Custom EM to display STRIDE records",
+  "authors": [
+    {
+      "name": "Ihab Zeedia",
+      "email": "ihabz@stanford.edu",
+      "institution": "Stanford University"
+    },
+    {
+      "name": "Andy Martin",
+      "email": "andy123@stanford.edu",
+      "institution": "Stanford University"
+    }
+  ],
+  "links": {
+    "project": [
+      {
+        "name": "Search STRIDE Records",
+        "icon": "search",
+        "url": "src/view/index.php",
+        "show-header-and-footer": true
+      }
+    ]
+  },
+  "project-settings": [
+    {
+      "key": "description4",
+      "name": "<h6 style='color:red;'><b>Project Debugging Option</b></h6>This will allow for extra debugging statements to be written to the project log files for the whole project - not just one configuration.",
+      "type": "descriptive"
+    },
+    {
+      "key": "mrn_field",
+      "name": "<b>Please select MRN field</b><br/>",
+      "required": true,
+      "type": "field-list"
+    },
+    {
+      "key": "instance",
+      "name": "<b>Instruments Configuration</b>",
+      "required": false,
+      "type": "sub_settings",
+      "repeatable": true,
+      "sub_settings": [
+        {
+          "key": "instrument",
+          "name": "<b>Select Instrument</b><br>",
+          "required": true,
+          "type": "form-list"
+        },
+        {
+          "key": "date-field",
+          "name": "<b>Select Date field for above instrument</b><br>",
+          "required": false,
+          "type": "field-list"
+        },
+        {
+          "key": "instrument-label",
+          "name": "<b>Specify label for summery column using smart variables</b><br>",
+          "required": true,
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}

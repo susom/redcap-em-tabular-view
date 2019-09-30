@@ -22,6 +22,7 @@ define("DATE_FORMAT", "m/d/y H:i:s");
  * @property array $fields
  * @property string $mrnField
  * @property array $instances
+ * @property array $dataDictionary
  */
 class TabularView extends \ExternalModules\AbstractExternalModule
 {
@@ -42,6 +43,7 @@ class TabularView extends \ExternalModules\AbstractExternalModule
 
     private $instances;
 
+    private $dataDictionary = array();
     public function __construct()
     {
         try {
@@ -69,6 +71,8 @@ class TabularView extends \ExternalModules\AbstractExternalModule
                 $this->setInstances();
 
                 $this->setFields();
+
+                $this->setDataDictionary(REDCap::getDataDictionary($this->getProjectId(), 'array'));
             }
         } catch (\Exception $exception) {
             echo $exception->getMessage();
@@ -77,6 +81,29 @@ class TabularView extends \ExternalModules\AbstractExternalModule
         }
     }
 
+    /**
+     * @return array
+     */
+    public function getDataDictionary()
+    {
+        return $this->dataDictionary;
+    }
+
+    /**
+     * @param array $dataDictionary
+     */
+    public function setDataDictionary($dataDictionary)
+    {
+        $this->dataDictionary = $dataDictionary;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataDictionaryProp($prop)
+    {
+        return $this->dataDictionary[$prop];
+    }
     /**
      * @return int
      */
@@ -249,6 +276,36 @@ class TabularView extends \ExternalModules\AbstractExternalModule
         }
     }
 
+    private function getValueLabel($value, $prop)
+    {
+        $group = $prop['select_choices_or_calculations'];
+        $choices = explode('|', $group);
+        $result = '';
+        foreach ($choices as $choice) {
+            $components = explode(",", $choice);
+            if ($prop['field_type'] == 'checkbox') {
+                foreach ($value as $k => $v) {
+                    //make sure the option selected is same as in the loop
+                    if ($k != $components[0]) {
+                        continue;
+                    }
+                    //checkbox is checked
+                    if ($v == "1") {
+                        $result .= ' ' . end($components) . ' => Yes,';
+                    } else {
+                        $result .= ' ' . end($components) . ' => No,';
+                    }
+                }
+                $result = ltrim($result, ",");
+            } else {
+                if ($value == $components[0]) {
+                    $result = end($components);
+                }
+            }
+        }
+        return $result;
+    }
+
     /**
      * @param $record
      * @return array
@@ -265,6 +322,11 @@ class TabularView extends \ExternalModules\AbstractExternalModule
                 $url = $this->getRecordURL($record['id'], $instrument, $instanceId);
                 foreach ($summeryFields as $field) {
                     if (isset($instance[$field])) {
+                        $prop = $this->getDataDictionaryProp($field);
+                        //if dropdown or checkbox get the label instead of numeric value.
+                        if ($prop['field_type'] == 'checkbox' || $prop['field_type'] == 'dropdown') {
+                            $instance[$field] = $this->getValueLabel($instance[$field], $prop);
+                        }
                         $summery = str_replace($field, $instance[$field], $summery);
                     }
                 }

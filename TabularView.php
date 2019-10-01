@@ -335,7 +335,7 @@ class TabularView extends \ExternalModules\AbstractExternalModule
                     $temp = array(
                         'id' => $record['id'],
                         'url' => $url,
-                        'date' => date("m/d/y H:i:s", $dateValue),
+                        'date' => date("m/d/Y H:i:s", $dateValue),
                         "summery" => $summery,
                         'instrument' => $instrument
                     );

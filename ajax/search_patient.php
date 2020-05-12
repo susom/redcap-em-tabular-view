@@ -16,7 +16,7 @@ try {
         <tr>
             <th>Date</th>
             <th>Instrument</th>
-            <th>Summery</th>
+            <th>Summary</th>
             <th>URL</th>
         </tr>
         </thead>

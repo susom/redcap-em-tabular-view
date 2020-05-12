@@ -207,7 +207,7 @@ class TabularView extends \ExternalModules\AbstractExternalModule
             if ($instance['instrument-label'] != "" && $instance['date-field'] != "") {
                 $temp = array_merge(array($instance['date-field']), $this->extractField($instance['instrument-label']));
             } elseif ($instance['date-field'] != "" && $instance['instrument-label'] == "") {
-                $temp = array($instance['date-field']);
+                $temp = array_keys($this->getProject()->forms[$instance['instrument']]['fields']);
             } elseif ($instance['instrument-label'] != "" && $instance['date-field'] == "") {
                 $temp = $this->extractField($instance['instrument-label']);
             }
@@ -317,26 +317,37 @@ class TabularView extends \ExternalModules\AbstractExternalModule
             $identifiers = $this->searchInstances($instrument);
             foreach ($array as $instanceId => $instance) {
                 $dateIdentifier = $identifiers['date-field'];
-                $summeryFields = $this->extractField($identifiers['instrument-label']);
-                $summery = str_replace(array("[", "]"), "", $identifiers['instrument-label']);
                 $url = $this->getRecordURL($record['id'], $instrument, $instanceId);
-                foreach ($summeryFields as $field) {
-                    if (isset($instance[$field])) {
-                        $prop = $this->getDataDictionaryProp($field);
-                        //if dropdown or checkbox get the label instead of numeric value.
-                        if ($prop['field_type'] == 'checkbox' || $prop['field_type'] == 'dropdown') {
-                            $instance[$field] = $this->getValueLabel($instance[$field], $prop);
+                $summary = '';
+                if ($identifiers['instrument-label'] != '') {
+                    $summaryFields = $this->extractField($identifiers['instrument-label']);
+                    $summary = str_replace(array("[", "]"), "", $identifiers['instrument-label']);
+                    foreach ($summaryFields as $field) {
+                        if (isset($instance[$field])) {
+                            $prop = $this->getDataDictionaryProp($field);
+                            //if dropdown or checkbox get the label instead of numeric value.
+                            if ($prop['field_type'] == 'checkbox' || $prop['field_type'] == 'dropdown') {
+                                $instance[$field] = $this->getValueLabel($instance[$field], $prop);
+                            }
+                            $summary = str_replace($field, $instance[$field], $summary);
                         }
-                        $summery = str_replace($field, $instance[$field], $summery);
                     }
+                } else {
+                    $fields = $this->getProject()->forms[$instrument]['fields'];
+                    foreach ($fields as $key => $label) {
+                        $summary .= $label . ':' . $instance[$key] . "<br>";
+                    }
+
                 }
+
+
                 if (!is_null($dateIdentifier)) {
                     $dateValue = strtotime($instance[$dateIdentifier]);
                     $temp = array(
                         'id' => $record['id'],
                         'url' => $url,
                         'date' => date("m/d/Y H:i:s", $dateValue),
-                        "summery" => $summery,
+                        "summary" => $summary,
                         'instrument' => $instrument
                     );
                     $result[$dateValue] = $temp;
@@ -345,7 +356,7 @@ class TabularView extends \ExternalModules\AbstractExternalModule
                         'id' => $record['id'],
                         'url' => $url,
                         'date' => null,
-                        "summery" => $summery,
+                        "summary" => $summary,
                         'instrument' => $instrument
                     );
                     $result[] = $temp;

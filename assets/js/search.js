@@ -13,7 +13,15 @@ Patient = {
                 $body.removeClass("loading");
             }
         });
-        console.log('asdasdasdasd')
+
+        $('#top-parent-field').keypress(function (e) {
+            var key = e.which;
+            if (key == 13)  // the enter key code
+            {
+                $("#search-top-parent").trigger('click');
+            }
+        });
+
         /**
          * Event for search top parent.
          */
@@ -42,7 +50,9 @@ Patient = {
                 alert("Request: " + JSON.stringify(request));
             },
             complete: function () {
-                jQuery("#record-instances").dataTable();
+                jQuery("#record-instances").dataTable({
+                    "paging": false,
+                });
             }
         });
     }

@@ -335,6 +335,10 @@ class TabularView extends \ExternalModules\AbstractExternalModule
                 } else {
                     $fields = $this->getProject()->forms[$instrument]['fields'];
                     foreach ($fields as $key => $label) {
+                        $prop = $this->getDataDictionaryProp($key);
+                        if ($prop['field_type'] == 'checkbox' || $prop['field_type'] == 'dropdown') {
+                            $instance[$key] = $this->getValueLabel($instance[$key], $prop);
+                        }
                         $summary .= $label . ':' . $instance[$key] . "<br>";
                     }
 

@@ -29,7 +29,7 @@ try {
                     <td><?php echo $instance['date'] ?></td>
                     <td><?php echo $instance['instrument'] ?></td>
                     <td><?php echo $instance['summary'] ?></td>
-                    <td><a class="btn btn-primary" href="<?php echo $instance['url'] ?>">Show Record</a></td>
+                    <td><a class="btn btn-primary" href="<?php echo $instance['url'] ?>">View Record</a></td>
                 </tr>
                 <?php
             }

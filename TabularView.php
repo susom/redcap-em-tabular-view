@@ -49,6 +49,7 @@ class TabularView extends \ExternalModules\AbstractExternalModule
         try {
             parent::__construct();
 
+            // comment
 //            if (isset($_GET['pid']) || isset($_POST['pid'])) {
 //
 //                if (isset($_GET['pid'])) {

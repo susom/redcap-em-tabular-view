@@ -49,31 +49,31 @@ class TabularView extends \ExternalModules\AbstractExternalModule
         try {
             parent::__construct();
 
-            if (isset($_GET['pid']) || isset($_POST['pid'])) {
-
-                if (isset($_GET['pid'])) {
-                    $projectId = filter_var($_GET['pid'], FILTER_SANITIZE_NUMBER_INT);
-                } elseif (isset($_POST['pid'])) {
-                    $projectId = filter_var($_POST['pid'], FILTER_SANITIZE_NUMBER_INT);
-                }
-                $this->setProjectId($projectId);
-
-                $this->setProject(new \Project($this->getProjectId()));
-
-                $this->getProject()->setRepeatingFormsEvents();
-
-                $this->setEventId($this->getFirstEventId());
-
-                $this->setInstruments();
-
-                $this->setMrnField();
-
-                $this->setInstances();
-
-                $this->setFields();
-
-                $this->setDataDictionary(REDCap::getDataDictionary($this->getProjectId(), 'array'));
-            }
+//            if (isset($_GET['pid']) || isset($_POST['pid'])) {
+//
+//                if (isset($_GET['pid'])) {
+//                    $projectId = filter_var($_GET['pid'], FILTER_SANITIZE_NUMBER_INT);
+//                } elseif (isset($_POST['pid'])) {
+//                    $projectId = filter_var($_POST['pid'], FILTER_SANITIZE_NUMBER_INT);
+//                }
+//                $this->setProjectId($projectId);
+//
+//                $this->setProject(new \Project($this->getProjectId()));
+//
+//                $this->getProject()->setRepeatingFormsEvents();
+//
+//                $this->setEventId($this->getFirstEventId());
+//
+//                $this->setInstruments();
+//
+//                $this->setMrnField();
+//
+//                $this->setInstances();
+//
+//                $this->setFields();
+//
+//                $this->setDataDictionary(REDCap::getDataDictionary($this->getProjectId(), 'array'));
+//            }
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         } catch (\LogicException $exception) {

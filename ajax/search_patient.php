@@ -6,7 +6,7 @@ namespace Stanford\ParentChild;
 
 try {
     $term = filter_var($_POST['term'], FILTER_SANITIZE_STRING);
-    $module->setProjectId(filter_var($_POST['pid'], FILTER_SANITIZE_NUMBER_INT));
+    #$module->setProjectId(filter_var($_POST['pid'], FILTER_SANITIZE_NUMBER_INT));
     $module->searchRecordViaMRN($term);
 
     //TODO build not repeating section
